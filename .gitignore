@@ -1,3 +1,3 @@
-outlog.log
+./logs/
+./db_data/
 run.sh
-bash_blog.db
