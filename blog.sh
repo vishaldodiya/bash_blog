@@ -14,12 +14,21 @@ then
             if [ -z $5 ] && [ -z $6 ]
             then
                 # Insert post
-                sqlite3 bash_blog.db "INSERT INTO post (title, content) VALUES('$3', '$4');"
+                sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content) VALUES('$3', '$4');"
                 echo 'Post has been successfully Added:'
             elif [ $5 = '--category' ]
             then
                 if [ $6 ]
                 then
+                    ifHas=$(sqlite3 ./db_data/bash_blog.db "SELECT category_id FROM category WHERE category_name = '$6';")
+                    if [ -z $ifHas ]
+                    then
+                        echo 'Category is not There Let me Add it!!'
+                        sqlite3 ./db_data/bash_blog.db "INSERT INTO category (category_name) VALUES('"$6"');"
+                        
+                    else
+                        echo 'I will Add post'
+                    fi 
                     # insert query with post and category table
                     echo 'insert query with post and category table'
                 else
@@ -39,7 +48,7 @@ then
     then
         # Select Post List
         printf "{\n"
-        sqlite3 bash_blog.db "SELECT post_id, title, content FROM post" | awk -F'|' '
+        sqlite3 ./db_data/bash_blog.db "SELECT post_id, title, content FROM post" | awk -F'|' '
             {   
                 printf "\t{\n"
                 printf "\t\tPost_id: "$1"\n"
@@ -70,7 +79,7 @@ then
         if [ $3 ]
         then
             # Insert Query
-            sqlite3 bash_blog.db "INSERT INTO category (category_name) VALUES('"$3"');"
+            sqlite3 ./db_data/bash_blog.db "INSERT INTO category (category_name) VALUES('"$3"');"
             echo 'Category Inserted Successfully'
             exit 0
         else
@@ -79,7 +88,7 @@ then
     elif [ $2 = 'list' ]
     then
         # Select Category List
-        sqlite3 bash_blog.db "SELECT category_id, category_name FROM category" | awk -F'|' '
+        sqlite3 ./db_data/bash_blog.db "SELECT category_id, category_name FROM category" | awk -F'|' '
         {
             printf "{\n"
             printf "\tCategory_id: "$1"\n"

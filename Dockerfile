@@ -14,15 +14,18 @@ RUN make install
 
 RUN rm sqlite-autoconf-3170000.tar.gz
 
-VOLUME ./logs/outlog.log:./logs
-
 COPY ./mysql/init.sql ./init.sql
-
-VOLUME ./db_data/bash_blog.db:./db_data
 
 COPY /blog.sh /blog.sh
 
+RUN mkdir db_data
+
+RUN touch ./db_data/bash_blog.db
+
 RUN sqlite3 ./db_data/bash_blog.db < init.sql
+
+
+
 
 
 
