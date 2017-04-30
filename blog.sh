@@ -14,31 +14,31 @@ then
             if [ -z $5 ] && [ -z $6 ]
             then
                 # Insert post
-                sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content) VALUES('$3', '$4');"
+                sqlite3 $DB_PATH "INSERT INTO post (title, content) VALUES('$3', '$4');"
                 echo 'Post has been successfully Added:'
             elif [ $5 = '--category' ]
             then
                 if [ $6 ]
                 then
                     # Check if it hase entered category
-                    ifHas=$(sqlite3 ./db_data/bash_blog.db "SELECT category_id FROM category WHERE category_name = '$6';")
+                    ifHas=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
                     if [ -z $ifHas ]
                     then
                         # We don't have category so insert category and then post'
                         echo 'Category is not There Let me Add it!!'
-                        sqlite3 ./db_data/bash_blog.db "INSERT INTO category (category_name) VALUES('"$6"');"
+                        sqlite3 $DB_PATH "INSERT INTO category (category_name) VALUES('"$6"');"
                         cat_id=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
-                        sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
+                        sqlite3 $DB_PATH "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
                         echo "Post has been successfully added with category"
                         
                     else
                         # We alredy have category so just insert into post
                         cat_id=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
-                        sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
+                        sqlite3 $DB_PATH "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
                         echo "Post has been successfully added with category"
                     fi 
                 else
-                    echo 'error'
+                    echo 'error not category'
                 fi
             else
                 echo 'Please Use the convention Or there may be typo error'
@@ -54,12 +54,13 @@ then
     then
         # Select Post List
         printf "{\n"
-        sqlite3 ./db_data/bash_blog.db "SELECT post_id, title, content FROM post" | awk -F'|' '
+        sqlite3 $DB_PATH "SELECT post_id, title, content, category_id FROM post" | awk -F'|' '
             {   
                 printf "\t{\n"
                 printf "\t\tPost_id: "$1"\n"
                 printf "\t\tTitle: "$2"\n"
                 printf "\t\tContent: "$3"\n"
+                printf "\t\tCategory_id: "$4"\n"
                 printf "\t},\n"
              }'
        printf "}\n"      
@@ -85,7 +86,7 @@ then
         if [ $3 ]
         then
             # Insert Query
-            sqlite3 ./db_data/bash_blog.db "INSERT INTO category (category_name) VALUES('"$3"');"
+            sqlite3 $DB_PATH "INSERT INTO category (category_name) VALUES('"$3"');"
             echo 'Category Inserted Successfully'
             exit 0
         else
@@ -94,7 +95,7 @@ then
     elif [ $2 = 'list' ]
     then
         # Select Category List
-        sqlite3 ./db_data/bash_blog.db "SELECT category_id, category_name FROM category" | awk -F'|' '
+        sqlite3 $DB_PATH "SELECT category_id, category_name FROM category" | awk -F'|' '
         {
             printf "{\n"
             printf "\tCategory_id: "$1"\n"
