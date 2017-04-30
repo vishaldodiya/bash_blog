@@ -3,7 +3,7 @@
 #echo '==============================='
 #echo '|| Welocome to terminal Blog ||'
 #echo '==============================='
-
+DB_PATH="./db_data/bash_blog.db"
 
 if [ $1 = 'post' ]
 then
@@ -20,17 +20,23 @@ then
             then
                 if [ $6 ]
                 then
+                    # Check if it hase entered category
                     ifHas=$(sqlite3 ./db_data/bash_blog.db "SELECT category_id FROM category WHERE category_name = '$6';")
                     if [ -z $ifHas ]
                     then
+                        # We don't have category so insert category and then post'
                         echo 'Category is not There Let me Add it!!'
                         sqlite3 ./db_data/bash_blog.db "INSERT INTO category (category_name) VALUES('"$6"');"
+                        cat_id=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
+                        sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
+                        echo "Post has been successfully added with category"
                         
                     else
-                        echo 'I will Add post'
+                        # We alredy have category so just insert into post
+                        cat_id=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
+                        sqlite3 ./db_data/bash_blog.db "INSERT INTO post (title, content, category_id) VALUES ('$3', '$4', '$cat_id');"
+                        echo "Post has been successfully added with category"
                     fi 
-                    # insert query with post and category table
-                    echo 'insert query with post and category table'
                 else
                     echo 'error'
                 fi
