@@ -68,8 +68,19 @@ then
     then
         if [ $3 ]
         then
-            # Search Query
-            echo 'search query'
+            # Search Query 
+            echo "Search Result:"
+            printf "{\n"
+            sqlite3 $DB_PATH "SELECT post_id, title, content, category_name FROM post LEFT OUTER JOIN category ON post.category_id = category.category_id WHERE title LIKE '%$3%' OR content LIKE '%$3%' OR category_name LIKE '$3%'" | awk -F'|' '
+            {
+                printf "\t{\n"
+                printf "\t\tPost_id: "$1"\n"
+                printf "\t\tTitle: "$2"\n"
+                printf "\t\tContent: "$3"\n"
+                printf "\t\tCategory_name: "$4"\n"
+                printf "\t},\n"
+            }'
+            printf "}\n"
         else
             echo 'error'
         fi
