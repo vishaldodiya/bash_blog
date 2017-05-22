@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+    nginx:
+        image: 'nginx'
+        depends_on: 
+            - phpfpm
+        networks:
+            - app-tier
+        ports:
+            - '80:80'
+        volumes:
+            - /nginx/vhost.conf:/bitnami/nginx/conf/vhosts/app.conf
+            - /public:/usr/share/nginx/html
+
+    phpfpm:
+        image: 'bitnami/php-fpm:latest'
+        working_dir: '/usr/share/nginx/html'
+        ports:
+            - '9000:9000'
+        networks:
+            - app-tier
+        volumes:
+            - /public:/usr/share/nginx/html
+    
+    mysql:
+        image: mariadb
+        environment: 
+            MYSQL_ROOT_PASSWORD: admin
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        links:
+            - mysql
+        ports:
+            - 8183:80
+        environment: 
+            PMA_ARBITRARY: 1
+
+networks: 
+    app-tier:
+        driver: bridge
