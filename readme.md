@@ -197,39 +197,5 @@ $ sh blog.sh post add "title" "content" --category "cat_name"
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
-
-
-
-# Create database
-`sqlite3 bash_blog.db`
-
-# To print datbases
-`.databases`
-
-# Create table
-`CREATE TABLE post(`
-`post_id INT PRIMARY KEY NOT NULL,`
-`title TEXT NOT NULL,`
-`content CHAR(200),`
-`category_id INT);`
-
-# To print tables
-`.tables`
-
-# To check schema
-`.schema table_name`
-
-# sqlite with bash 
-` rlwrap sqlite3`
-
-
-
-
+This project is licensed under the MIT License
 
