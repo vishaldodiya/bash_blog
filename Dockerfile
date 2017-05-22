@@ -18,6 +18,8 @@ COPY ./mysql/init.sql ./init.sql
 
 COPY /blog.sh /blog.sh
 
+COPY /sample.sh /sample.sh
+
 RUN mkdir db_data
 
 RUN touch ./db_data/bash_blog.db
