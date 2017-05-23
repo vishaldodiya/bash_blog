@@ -1,6 +1,6 @@
 # Bash Blog
 
-Bash blog is Cli blog which enhance and speed up the process of testing and used to automate tedious process.   
+Bash blog is Cli blog which enhance and speed up the process of testing and used to automate tedious process of data entry.   
 
 ## Getting Started
 
@@ -119,7 +119,7 @@ cat5
 
 Search Post
 ```
-$ sh blog.sh post search "text"
+$ sh blog.sh post search "title 4"
 ```
 > Output
 

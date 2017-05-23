@@ -14,15 +14,13 @@ then
             if [ -z $5 ] && [ -z $6 ]
             then
                 # Insert post
-                echo $3
-                echo $4
                 sqlite3 $DB_PATH "INSERT INTO post (title, content) VALUES('$3', '$4');"
                 echo 'Post has been successfully Added:'
             elif [ $5 = '--category' ]
             then
                 if [ $6 ]
                 then
-                    # Check if it hase entered category
+                    # Check if it has entered category
                     ifHas=$(sqlite3 $DB_PATH "SELECT category_id FROM category WHERE category_name = '$6';")
                     if [ -z $ifHas ]
                     then
