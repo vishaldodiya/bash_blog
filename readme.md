@@ -20,18 +20,18 @@ A step by step series of examples will help you to get a development env up & ru
 Build Project with docker 
 
 ```
-Docker build -t "bash_blog" .
+$ docker build -t "bash_blog" .
 ```
 
 Run Project without persisting data
 
 ```
-Docker run -it bash_blog /bin/sh
+$ docker run -it bash_blog /bin/sh
 ```
 
 Run Project with persisting data
 ```
-Docker run -v data:/db_data -it bash_blog /bin/sh
+$ docker run -v data:/db_data -it bash_blog /bin/sh
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
