@@ -61,7 +61,6 @@ then
         sqlite3 $DB_PATH "SELECT post.post_id, post.title, post.content FROM post"  > temp.txt
         temp=0
         while IFS='|' read o1 o2 o3;do
-                echo $o2
                 printf "\n"
                 printf "{\n"
                 printf "\n"
